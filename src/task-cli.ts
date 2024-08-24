@@ -66,7 +66,31 @@ const addTask = async (
   }
 };
 
-const parseCommand = async (args: string[]) => {
+const updateTask = async (
+  args: string[],
+  open: (path: string) => Promise<task[]>,
+  write: (path: string, data: task[]) => Promise<void>
+): Promise<void> => {};
+
+const deleteTask = async (
+  args: string[],
+  open: (path: string) => Promise<task[]>,
+  write: (path: string, data: task[]) => Promise<void>
+): Promise<void> => {};
+
+const listTask = async (
+  args: string[],
+  open: (path: string) => Promise<task[]>,
+  write: (path: string, data: task[]) => Promise<void>
+): Promise<void> => {};
+
+const updateTaskStatus = async (
+  args: string[],
+  open: (path: string) => Promise<task[]>,
+  write: (path: string, data: task[]) => Promise<void>
+): Promise<void> => {};
+
+const parseCommand = async (args: string[]): Promise<void> => {
   args = args.slice(2);
 
   switch (args[0]) {
