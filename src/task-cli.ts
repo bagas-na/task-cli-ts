@@ -21,18 +21,53 @@ const parseCommand = async (args: string[]) => {
 
   switch (args[0]) {
     case "add":
+      if (args.length === 2) {
+        addTask(args, openJSONFile, writeJSONFile);
+      } else {
+        console.log("Usage: task add <description>");
+      }
       break;
     case "update:":
+      if (args.length === 3) {
+        updateTask(args, openJSONFile, writeJSONFile);
+      } else {
+        console.log("Usage: task update <id> <description>");
+      }
       break;
     case "delete":
+      if (args.length === 2) {
+        deleteTask(args, openJSONFile, writeJSONFile);
+      } else {
+        console.log("Usage: task delete <id>");
+      }
       break;
     case "list":
+      if (args.length === 2 || args.length === 3) {
+        listTask(args, openJSONFile, writeJSONFile);
+      } else {
+        console.log("Usage: task list [filter: to-do|in-progress|done]");
+      }
       break;
     case "mark-to-do":
+      if (args.length === 2) {
+        updateTaskStatus(args, openJSONFile, writeJSONFile);
+      } else {
+        console.log("Usage: task mark-to-do <id>");
+      }
       break;
     case "mark-in-progress":
+      if (args.length === 2) {
+        updateTaskStatus(args, openJSONFile, writeJSONFile);
+      } else {
+        console.log("Usage: task mark-in-progress <id>");
+      }
       break;
     case "mark-done":
+      if (args.length === 2) {
+        updateTaskStatus(args, openJSONFile, writeJSONFile);
+      } else {
+        console.log("Usage: task mark-done <id>");
+      }
       break;
     default:
       console.log(
@@ -41,13 +76,8 @@ const parseCommand = async (args: string[]) => {
   }
 };
 
-
-
-const main = async () => {
-  const tasks = await parseJSONFile(PATH);
-  console.log(process.argv.slice(2));
-  console.table(tasks);
-  parseCommand(process.argv)
+const main = () => {
+  parseCommand(process.argv);
 };
 
 main();
