@@ -1,6 +1,16 @@
 import fs from "node:fs/promises";
 import process from "process";
 
+type taskStatus = "to-do" | "in-progress" | "done"
+
+type task = {
+  id: string;
+  description: string;
+  status: taskStatus;
+  createdAt: string;
+  updatedAt: string;
+};
+
 const JSON_PATH = "./task-list.json";
 
 const dateTimeOptions: Intl.DateTimeFormatOptions = {
@@ -12,19 +22,10 @@ const dateTimeOptions: Intl.DateTimeFormatOptions = {
   second: "2-digit",
   timeZone: "Asia/Jakarta",
   hour12: false,
-
 } 
 const dateTimeFormat = new Intl.DateTimeFormat('id-ID', dateTimeOptions);
 
-type taskStatus = "to-do" | "in-progress" | "done"
 
-type task = {
-  id: string;
-  description: string;
-  status: taskStatus;
-  createdAt: string;
-  updatedAt: string;
-};
 
 const openJSONFile = async (filePath: string): Promise<task[]> => {
   try {
