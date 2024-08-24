@@ -1,7 +1,1 @@
-[{
-    "id": 1,
-    "description": "Buy milk from the store",
-    "status": "todo",
-    "createdAt": "21/08/2024, 21:30:55",
-    "updatedAt": "21/08/2024, 21:31:01"
-}]
+[{"id":"1","description":"Eat lunch","status":"to-do","createdAt":"2024-08-24T09:22:47.256Z","updatedAt":"2024-08-24T09:35:12.967Z"},{"id":"2","description":"Get food for dinner","status":"to-do","createdAt":"2024-08-24T09:24:15.030Z","updatedAt":"2024-08-24T09:24:15.030Z"}]
