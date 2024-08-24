@@ -16,10 +16,12 @@ const dateTimeOptions: Intl.DateTimeFormatOptions = {
 } 
 const dateTimeFormat = new Intl.DateTimeFormat('id-ID', dateTimeOptions);
 
+type taskStatus = "to-do" | "in-progress" | "done"
+
 type task = {
   id: string;
   description: string;
-  status: "to-do" | "in-progress" | "done";
+  status: taskStatus;
   createdAt: string;
   updatedAt: string;
 };
@@ -91,6 +93,10 @@ const updateTask = async (
     const data = await open(JSON_PATH);
 
     const index = data.findIndex((task) => task.id === taskId);
+    if (index === -1) {
+      console.error(`Task not found (ID: ${taskId})`);
+      return;
+    }
 
     data[index] = {
       ...data[index],
@@ -100,6 +106,7 @@ const updateTask = async (
 
     await write(JSON_PATH, data);
     console.log(`Task updated successfully (ID: ${taskId})`);
+ 
   } catch (error: unknown) {
     if (typeof error === "string") {
       console.error(`Error reading file: ${error}`);
@@ -114,7 +121,30 @@ const deleteTask = async (
   args: string[],
   open: (path: string) => Promise<task[]>,
   write: (path: string, data: task[]) => Promise<void>
-): Promise<void> => {};
+): Promise<void> => {
+  try {
+    const taskId = args[1];
+    let data = await open(JSON_PATH);
+
+    const index = data.findIndex(task => task.id === taskId);
+    if (index === -1) {
+      console.error(`Task not found (ID: ${taskId})`);
+      return;
+    }
+    data = data.filter((_, i) => i !== index)
+
+    await write(JSON_PATH, data);
+    console.log(`Task deleted successfully (ID: ${taskId})`);
+
+  } catch (error: unknown) {
+    if (typeof error === "string") {
+      console.error(`Error reading file: ${error}`);
+    } else if (error instanceof Error) {
+      console.error(`Error reading file: ${error.message}`);
+    }
+    throw error;
+  }
+};
 
 const listTask = async (
   args: string[],
@@ -164,7 +194,36 @@ const updateTaskStatus = async (
   args: string[],
   open: (path: string) => Promise<task[]>,
   write: (path: string, data: task[]) => Promise<void>
-): Promise<void> => {};
+): Promise<void> => {
+  try {
+    const newStatus = args[0].slice(5) as taskStatus
+    const taskId = args[1];
+    const data = await open(JSON_PATH);
+
+    const index = data.findIndex((task) => task.id === taskId);
+    if (index === -1) {
+      console.error(`Task not found (ID: ${taskId})`);
+      return;
+    }
+
+    data[index] = {
+      ...data[index],
+      status: newStatus,
+      updatedAt: new Date().toISOString(),
+    };
+
+    await write(JSON_PATH, data);
+    console.log(`Task status updated successfully (ID: ${taskId})`);
+ 
+  } catch (error: unknown) {
+    if (typeof error === "string") {
+      console.error(`Error reading file: ${error}`);
+    } else if (error instanceof Error) {
+      console.error(`Error reading file: ${error.message}`);
+    }
+    throw error;
+  }
+};
 
 const parseCommand = async (args: string[]): Promise<void> => {
   args = args.slice(2);
