@@ -1,18 +1,68 @@
 import fs from "node:fs/promises";
 import process from "process";
 
-const PATH = "./task-list.json";
+const JSON_PATH = "./task-list.json";
 
-const parseJSONFile = async (filePath: string) => {
+type task = {
+  id: number;
+  description: string;
+  status: "to-do" | "in-progress" | "done";
+  createdAt: string;
+  updatedAt: string;
+};
+
+const openJSONFile = async (filePath: string): Promise<task[]> => {
   try {
     const data = await fs.readFile(filePath, "utf-8");
     return JSON.parse(data);
   } catch (error: unknown) {
     if (typeof error === "string") {
-      console.log(`Error reading file: ${error}`);
+      console.error(`Error reading file: ${error}`);
     } else if (error instanceof Error) {
-      console.log(`Error reading file: ${error.message}`);
+      console.error(`Error reading file: ${error.message}`);
     }
+    throw error;
+  }
+};
+
+const writeJSONFile = async (filePath: string, tasks: task[]): Promise<void> => {
+  try {
+    const data = JSON.stringify(tasks);
+    await fs.writeFile(filePath, data);
+  } catch (error: unknown) {
+    if (typeof error === "string") {
+      console.error(`Error reading file: ${error}`);
+    } else if (error instanceof Error) {
+      console.error(`Error reading file: ${error.message}`);
+    }
+    throw error;
+  }
+};
+
+const addTask = async (
+  args: string[],
+  open: (path: string) => Promise<task[]>,
+  write: (path: string, data: task[]) => Promise<void>
+): Promise<void> => {
+  try {
+    const data = await open(JSON_PATH);
+    const newTask: task = {
+      id: Math.max(...data.map((task) => task.id)) + 1,
+      description: args[1],
+      status: "to-do",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    await write(JSON_PATH, [...data, newTask]);
+
+  } catch (error: unknown) {
+    if (typeof error === "string") {
+      console.error(`Error reading file: ${error}`);
+    } else if (error instanceof Error) {
+      console.error(`Error reading file: ${error.message}`);
+    }
+    throw error;
   }
 };
 
