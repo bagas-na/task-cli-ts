@@ -1,6 +1,6 @@
 # Task CLI - A Task Tracker CLI App
 
-Task CLI is a command-line task tracker written in TypeScript and designed to run on Node.js. It helps users manage and track their tasks efficiently directly from the terminal. This project is a part of the roadmap.sh [backend projects](https://roadmap.sh/projects?g=backend), serving as a practical implementation of task management features in a CLI environment.
+Task CLI is a command-line task tracker written in TypeScript and designed to run on Node.js. It helps users manage and track their tasks efficiently directly from the terminal. This project is a part of the roadmap.sh [backend projects](https://roadmap.sh/projects?g=backend), serving as a practical implementation of task management features in a CLI environment. View the source code [here](https://github.com/bagas-na/task-cli-ts/blob/main/src/task-cli.ts)
 
 ## Features
 - Add, update, and remove tasks
